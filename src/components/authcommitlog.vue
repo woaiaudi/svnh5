@@ -12,7 +12,7 @@
 		</div>
 
 		<Divider>提交记录</Divider>
-		
+
 		<div>
 			<div v-for="(logItem,index) in commitLogList">
 				<form-preview :header-label="'V'+logItem.revision_id" :header-value="logItem.code_lines+'行'" :body-items="getFormListData(logItem)" @click.native="onItemClicked(logItem)"></form-preview>
@@ -81,8 +81,8 @@
 		methods: {
 			getCommitLogs: function() {
 				if(this.$ISJS.not.existy(this.authId) || this.$ISJS.empty(this.authId)) {
-					this.showConfirm("没有指定 开发人员,请返回选择", function(self) {
-						self.$router.push("/auths");
+					this.showConfirm("没有指定 开发人员,请返回选择", () => {
+            this.$router.push("/auths");
 					});
 
 					return;
@@ -146,22 +146,22 @@
 	.padding20px {
 		padding: 20px;
 	}
-	
+
 	.vux-demo {
 		text-align: center;
 		padding: 20px;
 	}
-	
+
 	.logo {
 		width: 100%;
 		height: auto;
 	}
-	
+
 	.popup0 {
 		padding-bottom: 15px;
 		height: 200px;
 	}
-	
+
 	.code-lines-number {
 		font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
 		font-size: 2em;
