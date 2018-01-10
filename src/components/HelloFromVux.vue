@@ -4,8 +4,10 @@
       <img class="logo" src="../assets/vux_logo.png">
       <h1> </h1>
     </div>
-    <group title="cell demo">
-      <cell title="VUX" value="cool" is-link></cell>
+    <group title="ZT3000  H5">
+      <router-link to="/auths">
+        <cell title="代码统计功能" value="进入" is-link></cell>
+      </router-link>
     </group>
   </div>
 </template>
