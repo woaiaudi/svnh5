@@ -14,7 +14,7 @@
       <search position="absolute" v-model="searchText" @on-submit="getAuthList" placeholder="模糊搜索"></search>
       <swipeout>
         <div v-for="(authItem,index) in authList" class="vux-1px-t">
-          <swipeout-item transition-mode="follow">
+          <swipeout-item transition-mode="follow" disabled="false">
             <div slot="right-menu">
               <swipeout-button @click.native="onDeleteAuthClicked(authItem)" type="warn">删除</swipeout-button>
             </div>
