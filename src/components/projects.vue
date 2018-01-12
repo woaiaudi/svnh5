@@ -27,7 +27,7 @@
             <x-input title="项目名称" v-model="editItemObj.name" placeholder="请输入(最多20字符)" :show-clear="true" :min="2"
                      :max="20"></x-input>
 
-            <x-textarea title="项目路径" placeholder="请输入SVN路径" :show-counter="false" :rows="1" :max="200"
+            <x-textarea title="项目路径" placeholder="请输入SVN路径"  :show-counter="false" :rows="1" :max="200"
                         :height="200" v-model="editItemObj.path"></x-textarea>
 
             <flexbox>

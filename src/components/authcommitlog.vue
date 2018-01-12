@@ -4,7 +4,7 @@
     <group title="时间范围">
       <calendar v-model="startDate" title="开始日期" disable-futureplaceholder="请选择日期"></calendar>
       <calendar v-model="endDate" title="结束日期" disable-future placeholder="请选择日期"></calendar>
-      <x-input title="项目路径" placeholder="请输入" v-model="tmpUrl" :is-type="be2333" :show-clear="true" placeholder-align="right" text-align="right"></x-input>
+      <selector title="项目路径" v-model="selectedProject" :value-map="['id', 'name']" :options="projectList"></selector>
 
     </group>
     <div class="padding20px">
@@ -52,7 +52,7 @@
     Popup,
     Countup,
     FormPreview,
-    XInput
+    Selector
   } from 'vux'
   import {format, subDays} from 'date-fns'
 
@@ -73,7 +73,7 @@
       Popup,
       Countup,
       FormPreview,
-      XInput
+      Selector
     },
     created: function () {
       if (this.$ISJS.existy(this.$route.params.authObj)) {
@@ -90,6 +90,7 @@
       this.startDate = this.aWeekAgoFEnd;
     },
     mounted: function () {
+      this.getProjectList();
     },
     computed: {
       //计算属性的 getter   结束时间的 一周前日期
@@ -158,6 +159,15 @@
       onCloseItemPopup: function () {
         this.clickedItemDetail = {};
         this.isShowItemPopup = false;
+      },
+      getProjectList: function () {
+        this.BaseHttp("./projects", {
+          searchText: ''
+        }, (response) => {
+          this.projectList = response;
+        }, (errorMsg) => {
+          this.showAlert(errorMsg);
+        });
       }
     },
     data() {
@@ -169,35 +179,9 @@
         commitLogList: [],
         clickedItemDetail: {},
         isShowItemPopup: false,
-        be2333: function (value) {
-          var validRest = {
-            valid: false,
-            msg: ''
-          }
+        selectedProject:{},
+        projectList: []
 
-          if(this.$ISJS.startWith(value,'svn://')){
-
-            validRest.valid=true;
-            validRest.msg='';
-
-
-//            var tmpStr = value.replace(/svn:\/\//, "http://");
-//
-//            if(this.$ISJS.url(tmpStr)){
-//              validRest.valid=true;
-//              validRest.msg='';
-//            }else {
-//              validRest.valid=false;
-//              validRest.msg='输入的SVN 路径 错误1';
-//            }
-          }else {
-            validRest.valid=false;
-            validRest.msg='输入的SVN 路径 错误2';
-          }
-
-          return validRest;
-        },
-        tmpUrl:"svn://192.168.2.190/LHZT3000/zt3000/02%E5%BC%80%E5%8F%91/02%E4%BB%A3%E7%A0%81/java/trunk/zero2_2.0.7"
       }
     }
   }
