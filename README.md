@@ -27,7 +27,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 - 第二步：在项目目录下安装 `Babel` 
   >  `cd` 到项目目录下，然后，执行全局安装命令   
-  >   `sudo npm install -g babel`
+  >   `sudo npm install --save-dev babel-cli`
   
 - 第三步：添加`Babel` 的 `File Watchers`
   >  `Preferences` -> `Tools`  -> `File Watchers`    
