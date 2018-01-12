@@ -115,7 +115,7 @@
           || this.$ISJS.empty(this.authObj.id)
           || this.authObj.id < 1) {
           this.showConfirm("没有指定 开发人员,请返回选择", () => {
-            this.$router.push("/auths");
+            this.$router.push("/");
           });
 
           return;
@@ -125,7 +125,7 @@
           startDate: this.startDate,
           endDate: this.endDate,
           auth: this.authObj.auth,
-          projectUrl: tmpUrl
+          projectUrl: this.tmpUrl
         }, (response) => {
           this.isLoadingHttp = false;
           this.commitLogList = response;
@@ -208,15 +208,6 @@
     padding: 20px;
   }
 
-  .vux-demo {
-    text-align: center;
-    padding: 20px;
-  }
-
-  .logo {
-    width: 100%;
-    height: auto;
-  }
 
   .popup0 {
     padding-bottom: 15px;

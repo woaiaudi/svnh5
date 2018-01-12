@@ -1,8 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloFromVux from '@/components/HelloFromVux'
-import Auths from '@/components/auths'
-import AuthCommitLog from '@/components/authcommitlog'
 
 Vue.use(Router)
 
@@ -10,18 +7,31 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloFromVux',
-      component: HelloFromVux
+      name: 'Home',
+      component: function (resolve) {
+        require(['@/components/home.vue'], resolve)
+      }
     },
     {
       path: '/auths',
       name: 'Auths',
-      component: Auths
+      component: function (resolve) {
+        require(['@/components/auths.vue'], resolve)
+      }
+    },
+    {
+      path: '/projects',
+      name: 'Projects',
+      component: function (resolve) {
+        require(['@/components/projects.vue'], resolve)
+      }
     },
     {
       path: '/authCommitLog',
       name: 'AuthCommitLog',
-      component: AuthCommitLog
+      component: function (resolve) {
+        require(['@/components/authcommitlog.vue'], resolve)
+      }
     }
   ]
 })

@@ -1,16 +1,7 @@
 <template>
   <div>
-    <x-header style="background-color:#8B8AEE;">
-      <span>SVN代码统计</span>
-      <x-icon slot="overwrite-left" type="navicon" size="35" style="fill:#fff;position:relative;top:-8px;left:-3px;"
-              @click.native="showAddAuth"></x-icon>
-    </x-header>
-    <div class="vux-demo">
-      <img class="logo" src="http://zt3000.com/images/index/logo.png">
-      <h1></h1>
-    </div>
-
-    <group title="开发人员列表">
+    <group>
+      <cell title="开发人员列表"></cell>
       <search position="absolute" v-model="searchText" @on-submit="getAuthList" placeholder="模糊搜索"></search>
       <swipeout>
         <div v-for="(authItem,index) in authList" class="vux-1px-t">
@@ -34,6 +25,7 @@
   import {XHeader, TransferDom, Group, Cell, Search, Swipeout, SwipeoutItem, SwipeoutButton} from 'vux'
 
   export default {
+    name: 'authList',
     directives: {
       TransferDom
     },
@@ -46,7 +38,7 @@
       SwipeoutItem,
       SwipeoutButton
     },
-    created: function () {
+    mounted: function () {
       this.getAuthList();
     },
     methods: {
@@ -56,7 +48,7 @@
         }, (response) => {
           this.authList = response;
         }, (errorMsg) => {
-          console.log(errorMsg);
+          this.showAlert(errorMsg);
         });
       },
       openAuthCommitHistory: function (authObj) {
@@ -87,7 +79,7 @@
               //添加成功后 重新请求列表
               _this.getAuthList();
             }, (errorMsg) => {
-              console.log(errorMsg);
+              this.showAlert(errorMsg);
             });
           }
         })
@@ -100,9 +92,9 @@
               authId: authObj.id
             }, (response) => {
               //删除成功后 重新请求列表
-              _this.getAuthList();
+              this.getAuthList();
             }, (errorMsg) => {
-              console.log(errorMsg);
+              this.showAlert(errorMsg);
             });
           })
       }
