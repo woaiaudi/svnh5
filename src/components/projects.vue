@@ -135,7 +135,7 @@
               //删除成功后 重新请求列表
               this.getProjectList();
             }, (errorMsg) => {
-              this.showAlert(errorMsg);
+              this.showAlert('没有查询到项目');
             });
           })
       }, onCloseItemPopup: function () {

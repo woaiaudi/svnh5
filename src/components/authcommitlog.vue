@@ -4,7 +4,9 @@
     <group title="时间范围">
       <calendar v-model="startDate" title="开始日期" disable-futureplaceholder="请选择日期"></calendar>
       <calendar v-model="endDate" title="结束日期" disable-future placeholder="请选择日期"></calendar>
-      <selector title="项目路径" v-model="selectedProject" :value-map="['id', 'name']" :options="projectList"></selector>
+      <selector ref="selectorProjectRef" v-model="selectedProjectId" title="项目路径" :value-map="['id', 'name']" :options="projectList"></selector>
+
+
 
     </group>
     <div class="padding20px">
@@ -20,8 +22,19 @@
 
     <div>
       <div v-for="(logItem,index) in commitLogList">
-        <form-preview :header-label="'V'+logItem.revision_id" :header-value="logItem.code_lines+'行'"
+        <masker style="border-radius: 2px;" color="#FFFFFF"  v-if="logItem.is_branch == 1">
+          <form-preview :header-label="'V'+logItem.revision_id" :header-value="logItem.code_lines+'行'"
+                        :body-items="getFormListData(logItem)" @click.native="onItemClicked(logItem)"></form-preview>
+
+          <div slot="content" class="m-content">
+            <img src="../assets/source-branch.png">
+          </div>
+        </masker>
+
+
+        <form-preview   v-if="logItem.is_branch != 1" :header-label="'V'+logItem.revision_id" :header-value="logItem.code_lines+'行'"
                       :body-items="getFormListData(logItem)" @click.native="onItemClicked(logItem)"></form-preview>
+
       </div>
     </div>
 
@@ -52,7 +65,7 @@
     Popup,
     Countup,
     FormPreview,
-    Selector
+    Selector,Masker
   } from 'vux'
   import {format, subDays} from 'date-fns'
 
@@ -73,7 +86,8 @@
       Popup,
       Countup,
       FormPreview,
-      Selector
+      Selector,
+      Masker
     },
     created: function () {
       if (this.$ISJS.existy(this.$route.params.authObj)) {
@@ -112,6 +126,8 @@
     },
     methods: {
       getCommitLogs: function () {
+
+
         if (this.$ISJS.not.existy(this.authObj.id)
           || this.$ISJS.empty(this.authObj.id)
           || this.authObj.id < 1) {
@@ -121,12 +137,28 @@
 
           return;
         }
+
+        //计算 选择的所有值
+//        var selPrjos = this.$refs["selectorProjectRef"].getFullValue();
+//        if (this.$ISJS.not.existy(selPrjos)
+//          || this.$ISJS.empty(selPrjos)) {
+//          this.showAlert("请选择一个项目");
+//
+//          return;
+//        }
+
+        if (this.selectedProjectId <= 0){
+          this.showAlert("请选择一个项目");
+          return;
+        }
+
+
         this.isLoadingHttp = true;
         this.BaseHttp("./commitLogs", {
           startDate: this.startDate,
           endDate: this.endDate,
           auth: this.authObj.auth,
-          projectUrl: this.tmpUrl
+          projectId: this.selectedProjectId
         }, (response) => {
           this.isLoadingHttp = false;
           this.commitLogList = response;
@@ -166,7 +198,7 @@
         }, (response) => {
           this.projectList = response;
         }, (errorMsg) => {
-          this.showAlert(errorMsg);
+          this.showAlert('获取项目列表失败');
         });
       }
     },
@@ -179,9 +211,8 @@
         commitLogList: [],
         clickedItemDetail: {},
         isShowItemPopup: false,
-        selectedProject:{},
-        projectList: []
-
+        projectList: [],
+        selectedProjectId:0
       }
     }
   }
@@ -203,4 +234,17 @@
     font-size: 2em;
     color: #04BE02;
   }
+
+  .m-content {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    top: 10%;
+  }
+  .m-content img {
+     width: 44px;
+    height: 44px;
+   }
 </style>

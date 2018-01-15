@@ -57,10 +57,11 @@ Vue.prototype.showConfirm = function(msgContent = '提醒内容', okHandler, msg
  */
 Vue.prototype.BaseHttp = function(url, paramMap, on200Code, onErrorCode,onCatch) {
   //var baseUrlStr = window.location.protocol+"//"+window.location.host+'/svnlog/';
-  var baseUrlStr = "https://c344fbe7-1df9-43ce-adcf-ca33bbc9ae25.mock.pstmn.io/svnlog/";
+  var baseUrlStr = 'http://192.168.2.156:8080/svnlog/';
+  //var baseUrlStr = "https://c344fbe7-1df9-43ce-adcf-ca33bbc9ae25.mock.pstmn.io/svnlog/";
   console.log(baseUrlStr);
 	this.$http.defaults.baseURL = baseUrlStr;
-  this.$http.defaults.timeout = 2000;
+  //this.$http.defaults.timeout = 30000; //查询比较慢，所以不舍超时时间
 
 	//postman 调试用，不添加时间戳，会返回304 not modify
 	//paramMap.t = (Date.parse(new Date())/1000);
