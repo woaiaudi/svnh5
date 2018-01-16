@@ -3,7 +3,7 @@
 
     <group>
       <cell title="项目列表" value="添加" @click.native="showAddproject"></cell>
-      <search position="absolute" v-model="searchText" @on-submit="getProjectList" placeholder="模糊搜索"></search>
+      <search position="absolute" v-model="searchText" @on-submit="getProjectList" @on-change="onSearchTextChange" placeholder="模糊搜索"></search>
       <swipeout>
         <div v-for="(projectItem,index) in projectList" class="vux-1px-t">
           <swipeout-item transition-mode="follow">
@@ -67,6 +67,8 @@
     XInput,
     XTextarea
   } from 'vux'
+
+  import { debounce } from 'vux'
 
   export default {
     directives: {
@@ -183,7 +185,10 @@
       return {
         searchText: "",
         projectList: [],
-        editItemObj: {}
+        editItemObj: {},
+        onSearchTextChange:debounce(()=>{
+          this.getProjectList();
+        },800)
       }
     }
   }

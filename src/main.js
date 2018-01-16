@@ -56,8 +56,8 @@ Vue.prototype.showConfirm = function(msgContent = '提醒内容', okHandler, msg
  * 基础请求
  */
 Vue.prototype.BaseHttp = function(url, paramMap, on200Code, onErrorCode,onCatch) {
-  //var baseUrlStr = window.location.protocol+"//"+window.location.host+'/svnlog/';
-  var baseUrlStr = 'http://192.168.2.156:8080/svnlog/';
+  var baseUrlStr = window.location.protocol+"//"+window.location.host+'/svnlog/';
+  //var baseUrlStr = 'http://192.168.2.156:8080/svnlog/';
   //var baseUrlStr = "https://c344fbe7-1df9-43ce-adcf-ca33bbc9ae25.mock.pstmn.io/svnlog/";
   console.log(baseUrlStr);
 	this.$http.defaults.baseURL = baseUrlStr;
