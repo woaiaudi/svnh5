@@ -2,7 +2,7 @@
   <div>
     <group>
       <cell title="开发人员列表"></cell>
-      <search position="absolute" v-model="searchText" @on-submit="getAuthList" placeholder="模糊搜索"></search>
+      <search position="absolute" v-model="searchText" @on-submit="getAuthList" @on-change="debounce(onSearchTextChange, 500)" placeholder="模糊搜索"></search>
       <swipeout>
         <div v-for="(authItem,index) in authList" class="vux-1px-t">
           <swipeout-item transition-mode="follow">
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-  import {XHeader, TransferDom, Group, Cell, Search, Swipeout, SwipeoutItem, SwipeoutButton} from 'vux'
+  import {XHeader, TransferDom, Group, Cell, Search, Swipeout, SwipeoutItem, SwipeoutButton,debounce} from 'vux'
 
   export default {
     name: 'authList',
@@ -42,6 +42,11 @@
       this.getAuthList();
     },
     methods: {
+      onSearchTextChange:function(str){
+        console.log("search : "+ this.searchText)
+
+
+      },
       getAuthList: function () {
         this.BaseHttp("./code/auths", {
           searchText: this.searchText
