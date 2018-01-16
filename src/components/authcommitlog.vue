@@ -4,7 +4,7 @@
     <group title="时间范围">
       <calendar v-model="startDate" title="开始日期" disable-futureplaceholder="请选择日期"></calendar>
       <calendar v-model="endDate" title="结束日期" disable-future placeholder="请选择日期"></calendar>
-      <selector ref="selectorProjectRef" v-model="selectedProjectId" title="项目路径" :value-map="['id', 'name']" :options="projectList"></selector>
+      <selector ref="selectorProjectRef" placeholder="请选择项目" v-model="selectedProjectId" title="项目路径" :value-map="['id', 'name']" :options="projectList"></selector>
 
 
 
@@ -22,18 +22,12 @@
 
     <div>
       <div v-for="(logItem,index) in commitLogList">
-        <masker style="border-radius: 2px;" color="#FFFFFF"  v-if="logItem.is_branch == 1">
-          <form-preview :header-label="'V'+logItem.revision_id" :header-value="logItem.code_lines+'行'"
-                        :body-items="getFormListData(logItem)" @click.native="onItemClicked(logItem)"></form-preview>
 
-          <div slot="content" class="m-content">
-            <img src="../assets/source-branch.png">
-          </div>
-        </masker>
+        <form-preview :header-label="'V'+logItem.revision_id" :header-value="(logItem.is_branch == 1)?'版本分支':(logItem.code_lines+'行')"
+                      :body-items="getFormListData(logItem)" @click.native="onItemClicked(logItem)">
 
 
-        <form-preview   v-if="logItem.is_branch != 1" :header-label="'V'+logItem.revision_id" :header-value="logItem.code_lines+'行'"
-                      :body-items="getFormListData(logItem)" @click.native="onItemClicked(logItem)"></form-preview>
+        </form-preview>
 
       </div>
     </div>
@@ -154,14 +148,18 @@
 
 
         this.isLoadingHttp = true;
-        this.BaseHttp("./commitLogs", {
+        this.BaseHttp("./code/commitLogs", {
           startDate: this.startDate,
           endDate: this.endDate,
           auth: this.authObj.auth,
           projectId: this.selectedProjectId
         }, (response) => {
           this.isLoadingHttp = false;
-          this.commitLogList = response;
+          if(this.$ISJS.not.empty(response)){
+            this.commitLogList = response;
+          }else {
+            this.showAlert('没有查询到相关记录');
+          }
         }, (errorMsg) => {
           this.isLoadingHttp = false;
           this.showAlert(errorMsg);
@@ -193,7 +191,7 @@
         this.isShowItemPopup = false;
       },
       getProjectList: function () {
-        this.BaseHttp("./projects", {
+        this.BaseHttp("./project/all", {
           searchText: ''
         }, (response) => {
           this.projectList = response;
@@ -212,7 +210,7 @@
         clickedItemDetail: {},
         isShowItemPopup: false,
         projectList: [],
-        selectedProjectId:0
+        selectedProjectId:null
       }
     }
   }
@@ -226,7 +224,7 @@
 
   .popup0 {
     padding-bottom: 15px;
-    height: 200px;
+    height: 100%;
   }
 
   .code-lines-number {
@@ -235,16 +233,4 @@
     color: #04BE02;
   }
 
-  .m-content {
-    text-align: center;
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 100%;
-    top: 10%;
-  }
-  .m-content img {
-     width: 44px;
-    height: 44px;
-   }
 </style>

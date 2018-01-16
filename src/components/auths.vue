@@ -43,7 +43,7 @@
     },
     methods: {
       getAuthList: function () {
-        this.BaseHttp("./auths", {
+        this.BaseHttp("./code/auths", {
           searchText: this.searchText
         }, (response) => {
           this.authList = response;

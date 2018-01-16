@@ -108,7 +108,7 @@
     },
     methods: {
       getProjectList: function () {
-        this.BaseHttp("./projects", {
+        this.BaseHttp("./project/all", {
           searchText: this.searchText
         }, (response) => {
           this.projectList = response;
@@ -129,8 +129,8 @@
       onDeleteprojectClicked: function (projectObj) {
         this.showConfirm("确定要删除吗？",
           ()=> {
-            this.BaseHttp("./delproject", {
-              projectId: projectObj.id
+            this.BaseHttp("./project/delete", {
+              id: projectObj.id
             }, (response) => {
               //删除成功后 重新请求列表
               this.getProjectList();
@@ -155,10 +155,10 @@
         var urlxxx = ''
         if (this.editItemObj.id == -1) {
           //是 添加功能
-          urlxxx = './addProject'
+          urlxxx = './project/add'
         } else if (this.editItemObj.id > 0) {
           //是编辑功能
-          urlxxx = './editProject'
+          urlxxx = './project/edit'
         }
 
 
@@ -192,5 +192,6 @@
 <style>
   .popup0 {
     padding-bottom: 5px;
+    height: 100%;
   }
 </style>
