@@ -50,6 +50,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] 项目 详情模态框高度调整
 - [ ] 提交日志详情中查看 changepaths
 - [ ] 提交日志详情中 重新刷 changepaths
+- [ ] 检索时，输入一个字符 检索一次，使用去抖与节流函数
 - [ ] 下拉刷新
 
 
