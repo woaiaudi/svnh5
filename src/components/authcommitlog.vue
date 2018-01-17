@@ -33,10 +33,10 @@
     </div>
 
     <div v-transfer-dom>
-      <popup v-model="isShowItemPopup">
+      <popup :value="isShowItemPopup" @on-hide="onDetailPopupHidden" height="60%">
         <div class="popup0">
-          <div>{{clickedItemDetail.commit_log}}</div>
-          <x-button mini :gradients="['#19D5FD','#1D62F0']" @click.native="onCloseItemPopup()">关闭</x-button>
+          <change-paths :logbean="clickedItemDetail"></change-paths>
+
         </div>
       </popup>
     </div>
@@ -61,7 +61,9 @@
     FormPreview,
     Selector,Masker
   } from 'vux'
-  import {format, subDays} from 'date-fns'
+  import {format, subDays} from 'date-fns';
+
+  import ChangePaths from './ChangePaths.vue';
 
   export default {
     directives: {
@@ -81,7 +83,8 @@
       Countup,
       FormPreview,
       Selector,
-      Masker
+      Masker,
+      ChangePaths
     },
     created: function () {
       if (this.$ISJS.existy(this.$route.params.authObj)) {
@@ -116,6 +119,16 @@
           lines += (this.commitLogList[index].code_lines);
         }
         return lines;
+      },
+      isShowItemPopup:function () {
+        //是否显示详情 的弹框
+        if(this.$ISJS.not.empty(this.clickedItemDetail)
+          && this.clickedItemDetail.id > 0){
+          //显示弹框
+          return true;
+        }else {
+          return false;
+        }
       }
     },
     methods: {
@@ -184,11 +197,9 @@
       },
       onItemClicked: function (item) {
         this.clickedItemDetail = item;
-        this.isShowItemPopup = true;
       },
-      onCloseItemPopup: function () {
+      onDetailPopupHidden:function () {
         this.clickedItemDetail = {};
-        this.isShowItemPopup = false;
       },
       getProjectList: function () {
         this.BaseHttp("./project/all", {
@@ -208,7 +219,6 @@
         endDate: format(new Date(), 'YYYY-MM-DD'), //不能用 TODAY
         commitLogList: [],
         clickedItemDetail: {},
-        isShowItemPopup: false,
         projectList: [],
         selectedProjectId:null
       }
@@ -224,7 +234,6 @@
 
   .popup0 {
     padding-bottom: 15px;
-    height: 100%;
   }
 
   .code-lines-number {
